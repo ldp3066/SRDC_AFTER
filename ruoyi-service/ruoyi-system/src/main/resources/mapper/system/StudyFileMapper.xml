@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.StudyFileMapper">
+    
+    <resultMap type="StudyFile" id="StudyFileResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="url"    column="url"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createId"    column="create_id"    />
+        <result property="playNum"    column="play_num"    />
+        <result property="downNum"    column="down_num"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="userName"    column="user_name"    />
+    </resultMap>
+
+    <sql id="selectStudyFileVo">
+        select f.id, f.title, f.type, f.url, f.create_time, f.update_time, f.create_id, f.play_num, f.down_num, u.user_name,u.avatar
+        from study_file f left join sys_user u on f.create_id=u.user_id
+    </sql>
+
+    <select id="selectStudyFileList" parameterType="StudyFile" resultMap="StudyFileResult">
+        <include refid="selectStudyFileVo"/>
+        <where>
+        	<if test="title != null  and title != ''">and title like CONCAT('%',#{title},'%')</if> 
+        	<if test="createId != null  and createId != ''">and create_id = #{createId}</if> 
+        	<if test="type != null ">and type =#{type}</if>  
+        </where>
+    </select>
+    
+    <select id="selectStudyFileById" parameterType="Long" resultMap="StudyFileResult">
+        <include refid="selectStudyFileVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertStudyFile" parameterType="StudyFile" useGeneratedKeys="true" keyProperty="id">
+        insert into study_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null  and title != ''">title,</if>
+            <if test="type != null ">type,</if>
+            <if test="url != null  and url != ''">url,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="createId != null ">create_id,</if>
+            <if test="playNum != null ">play_num,</if>
+            <if test="downNum != null ">down_num,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="type != null ">#{type},</if>
+            <if test="url != null  and url != ''">#{url},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="createId != null ">#{createId},</if>
+            <if test="playNum != null ">#{playNum},</if>
+            <if test="downNum != null ">#{downNum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStudyFile" parameterType="StudyFile">
+        update study_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="type != null ">type = #{type},</if>
+            <if test="url != null  and url != ''">url = #{url},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="createId != null ">create_id = #{createId},</if>
+            <if test="playNum != null ">play_num = play_num+1,</if>
+            <if test="downNum != null ">down_num = down_num+1,</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStudyFileById" parameterType="Long">
+        delete from study_file where id = #{id}
+    </delete>
+
+    <delete id="deleteStudyFileByIds" parameterType="String">
+        delete from study_file where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <select id="selectTopPlay" resultMap="StudyFileResult">
+    	<include refid="selectStudyFileVo"/>
+        where type = 2 order by play_num desc
+    </select>
+    
+    <select id="selectTopDown" resultMap="StudyFileResult">
+    	<include refid="selectStudyFileVo"/>
+        where type = 1 order by down_num desc
+    </select>
+    
+</mapper>

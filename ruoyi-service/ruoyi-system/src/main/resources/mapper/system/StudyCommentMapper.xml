@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.StudyCommentMapper">
+    
+    <resultMap type="StudyComment" id="StudyCommentResult">
+        <result property="id"    column="id"    />
+        <result property="studyId"    column="study_id"    />
+        <result property="createId"    column="create_id"    />
+        <result property="content"    column="content"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="nick"    column="nick"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectStudyCommentVo">
+        select c.id, c.study_id, c.content, c.create_id, c.create_time, u.user_name as nick, u.avatar from study_comment c
+        left join sys_user u on c.create_id=u.user_id
+    </sql>
+
+    <select id="selectStudyCommentList" parameterType="StudyComment" resultMap="StudyCommentResult">
+        <include refid="selectStudyCommentVo"/>
+        <where>  
+        	 <if test="studyId != null">and c.study_id =#{studyId}</if>
+        	 <if test="content != null  and content != ''">and content like CONCAT('%',#{content},'%')</if> 
+        	 <if test="createId != null">and c.create_id =#{createId}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectStudyCommentById" parameterType="Long" resultMap="StudyCommentResult">
+        <include refid="selectStudyCommentVo"/>
+        where c.id = #{id}
+    </select>
+        
+    <insert id="insertStudyComment" parameterType="StudyComment">
+        insert into study_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">id,</if>
+            <if test="studyId != null ">study_id,</if>
+            <if test="createId != null ">create_id,</if>
+            <if test="content != null  and content != ''">content,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">#{id},</if>
+            <if test="studyId != null ">#{studyId},</if>
+            <if test="createId != null ">#{createId},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStudyComment" parameterType="StudyComment">
+        update study_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="studyId != null ">study_id = #{studyId},</if>
+            <if test="content != null  and content != ''">content = #{content},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStudyCommentById" parameterType="Long">
+        delete from study_comment where id = #{id}
+    </delete>
+
+    <delete id="deleteStudyCommentByIds" parameterType="String">
+        delete from study_comment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.StudyDownMapper">
+    
+    <resultMap type="StudyDown" id="StudyDownResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="fileId"    column="file_id"    />
+        <result property="fileTitle"    column="file_title"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectStudyDownVo">
+        select id, user_id, file_id, file_title, file_type, create_time from study_down
+    </sql>
+
+    <select id="selectStudyDownList" parameterType="StudyDown" resultMap="StudyDownResult">
+        <include refid="selectStudyDownVo"/>
+        <where>
+        	 <if test="userId != null ">and user_id = #{userId}</if>  
+        	 <if test="fileId != null ">and file_id = #{fileId}</if>
+             <if test="fileType != null ">and file_type = #{fileType}</if>
+        </where>
+    </select>
+    
+    <select id="selectStudyDownById" parameterType="Long" resultMap="StudyDownResult">
+        <include refid="selectStudyDownVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertStudyDown" parameterType="StudyDown">
+        insert into study_down
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">id,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="fileId != null ">file_id,</if>
+            <if test="fileTitle != null  and fileTitle != ''">file_title,</if>
+            <if test="fileType != null ">file_type,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">#{id},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="fileId != null ">#{fileId},</if>
+            <if test="fileTitle != null  and fileTitle != ''">#{fileTitle},</if>
+            <if test="fileType != null ">#{fileType},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStudyDown" parameterType="StudyDown">
+        update study_down
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="fileId != null ">file_id = #{fileId},</if>
+            <if test="fileTitle != null  and fileTitle != ''">file_title = #{fileTitle},</if>
+            <if test="fileType != null ">file_type = #{fileType},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStudyDownById" parameterType="Long">
+        delete from study_down where id = #{id}
+    </delete>
+
+    <delete id="deleteStudyDownByIds" parameterType="String">
+        delete from study_down where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
