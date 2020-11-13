@@ -25,6 +25,23 @@ public class SysMenu extends BaseEntity
     /** 菜单名称 */
     private String            menuName;
 
+    public Long getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(Long menuId) {
+        this.menuId = menuId;
+    }
+
+    public String getMenuName() {
+        return menuName;
+    }
+
+    public void setMenuName(String menuName) {
+        this.menuName = menuName;
+    }
+
+
     /** 父菜单名称 */
     private String            parentName;
 
@@ -66,6 +83,126 @@ public class SysMenu extends BaseEntity
 
     /** 隐藏 PageHeader 组件中的页面带的 面包屑和页面标题栏 */
     private Boolean           hiddenHeader;
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public String getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(String orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    public String getMenuType() {
+        return menuType;
+    }
+
+    public void setMenuType(String menuType) {
+        this.menuType = menuType;
+    }
+
+    public String getMenuKey() {
+        return menuKey;
+    }
+
+    public void setMenuKey(String menuKey) {
+        this.menuKey = menuKey;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public void setComponent(String component) {
+        this.component = component;
+    }
+
+    public String getVisible() {
+        return visible;
+    }
+
+    public void setVisible(String visible) {
+        this.visible = visible;
+    }
+
+    public String getPerms() {
+        return perms;
+    }
+
+    public void setPerms(String perms) {
+        this.perms = perms;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getRedirect() {
+        return redirect;
+    }
+
+    public void setRedirect(String redirect) {
+        this.redirect = redirect;
+    }
+
+    public Boolean getHiddenChildren() {
+        return hiddenChildren;
+    }
+
+    public void setHiddenChildren(Boolean hiddenChildren) {
+        this.hiddenChildren = hiddenChildren;
+    }
+
+    public Boolean getHiddenHeader() {
+        return hiddenHeader;
+    }
+
+    public void setHiddenHeader(Boolean hiddenHeader) {
+        this.hiddenHeader = hiddenHeader;
+    }
+
+    public List<SysMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysMenu> children) {
+        this.children = children;
+    }
 
     /** 子菜单 */
     private List<SysMenu>     children         = new ArrayList<SysMenu>();
